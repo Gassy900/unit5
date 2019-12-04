@@ -25,6 +25,20 @@ public class TaskMaster extends javax.swing.JFrame {
         li = list.listIterator();
         curtaskvar = 0;
         tottaskvar = 0;
+
+        li.add(new Task("Homework", "Math, pages 12-19"));
+        li.add(new Task("Groceries", "Bread, Milk Eggs"));
+        li.add(new Task("Chores", "Laundry, Clean Driveway"));
+
+        while (li.hasPrevious()) {
+            t = (Task) li.previous();
+        }
+
+        curtask.setText("" + curtaskvar);
+        tottask.setText("" + tottaskvar);
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDesc());
+
     }
 
     @SuppressWarnings("unchecked")
@@ -97,6 +111,11 @@ public class TaskMaster extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton1.setText("|<");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("<");
 
@@ -133,6 +152,11 @@ public class TaskMaster extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         jMenuItem7.setText("Show All");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem7);
 
         jMenuItem8.setText("Exit");
@@ -229,14 +253,42 @@ public class TaskMaster extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error - Must enter all information");
             return;
         }
-        if(tottaskvar>0) li.next();
-        
+        if (tottaskvar > 0) {
+            li.next();
+        }
+
         li.add(t);
         li.previous();
         curtaskvar++;
         tottaskvar++;
-        
+        curtask.setText("" + curtaskvar);
+        tottask.setText("" + tottaskvar);
+        JOptionPane.showMessageDialog(this, "Task Added");
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (curtaskvar == tottaskvar) {
+            return;
+        }
+        while (li.hasNext()) {
+            li.next();
+        }
+        t = (Task) li.previous();
+        curtaskvar = tottaskvar;
+        curtask.setText(""+curtask);
+        txtname.setText(""+t.getName());
+        txtdesc.setText(""+t.getDesc());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        String result ="";
+        for (int i = 0; i < list.size(); i++) {
+            t=(Task)list.get(i);
+            result += "TASK " + (i+1) + ":\n" + t.toString()+"\n";
+        }
+        JOptionPane.showMessageDialog(this, result);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
