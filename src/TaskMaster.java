@@ -3,15 +3,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author mitc2200
- */
+
 public class TaskMaster extends javax.swing.JFrame {
 
     ArrayList<Task> list;
@@ -181,9 +173,19 @@ public class TaskMaster extends javax.swing.JFrame {
         jMenu2.setText("Edit");
 
         replace.setText("Replace This As Current Task");
+        replace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceActionPerformed(evt);
+            }
+        });
         jMenu2.add(replace);
 
         remove.setText("Remove Current Task");
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
         jMenu2.add(remove);
 
         restore.setText("Restore Current Task");
@@ -202,6 +204,11 @@ public class TaskMaster extends javax.swing.JFrame {
         jMenu3.setText("Insert");
 
         before.setText("Before Current Task");
+        before.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beforeActionPerformed(evt);
+            }
+        });
         jMenu3.add(before);
 
         after.setText("After Current Task");
@@ -287,7 +294,19 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_afterActionPerformed
 
     private void verlastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verlastActionPerformed
-       
+       if (curtaskvar == 1) {
+            return;
+        }
+        while (li.hasPrevious()) {
+            li.previous();
+        }
+        li.next();
+        t = (Task) li.previous();
+        curtaskvar = 1;
+        curtask.setText("Current Task: " + curtaskvar);
+        txtname.setText("" + t.getName());
+        txtdesc.setText("" + t.getDesc());
+                                    
     }//GEN-LAST:event_verlastActionPerformed
 
     private void showallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showallActionPerformed
@@ -300,7 +319,10 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_showallActionPerformed
 
     private void restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreActionPerformed
-
+        li.next();
+        t = (Task) li.previous();
+        txtname.setText(""+t.getName());
+        txtdesc.setText(""+t.getDesc());
     }//GEN-LAST:event_restoreActionPerformed
 
     private void upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upActionPerformed
@@ -340,6 +362,40 @@ public class TaskMaster extends javax.swing.JFrame {
         txtname.setText("" + t.getName());
         txtdesc.setText("" + t.getDesc());
     }//GEN-LAST:event_verupActionPerformed
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        
+    }//GEN-LAST:event_removeActionPerformed
+
+    private void replaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceActionPerformed
+        String tempname = txtname.getText();
+        String tempdesc = txtdesc.getText();
+        li.next();
+        li.previous();
+        t = new Task(tempname,tempdesc);
+        li.set(t);
+        
+    }//GEN-LAST:event_replaceActionPerformed
+
+    private void beforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beforeActionPerformed
+         String nm = txtname.getText();
+        String d = txtdesc.getText();
+        Task t = new Task(nm, d);
+        if (t.validate() == false) {
+            JOptionPane.showMessageDialog(this, "Error - Must enter all information");
+            return;
+        }
+        if (tottaskvar > 0) {
+            li.previous();
+        }
+
+        li.add(t);
+        curtaskvar--;
+        tottaskvar++;
+        curtask.setText("Current Task: " + curtaskvar);
+        tottask.setText("Total Task: " + tottaskvar);
+        JOptionPane.showMessageDialog(this, "Task Added");
+    }//GEN-LAST:event_beforeActionPerformed
 
     /**
      * @param args the command line arguments
