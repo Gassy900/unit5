@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
  */
 public class TaskMaster extends javax.swing.JFrame {
 
-    ArrayList list;
-    ListIterator li;
+    ArrayList<Task> list;
+    ListIterator<Task> li;
     int curtaskvar, tottaskvar;
     Task t;
 
@@ -23,19 +23,18 @@ public class TaskMaster extends javax.swing.JFrame {
         initComponents();
         list = new ArrayList();
         li = list.listIterator();
-        curtaskvar = 0;
-        tottaskvar = 0;
+        curtaskvar = 1;
 
         li.add(new Task("Homework", "Math, pages 12-19"));
         li.add(new Task("Groceries", "Bread, Milk Eggs"));
         li.add(new Task("Chores", "Laundry, Clean Driveway"));
-
+        tottaskvar = list.size();
         while (li.hasPrevious()) {
             t = (Task) li.previous();
         }
 
-        curtask.setText("" + curtaskvar);
-        tottask.setText("" + tottaskvar);
+        curtask.setText("Current Task: " + curtaskvar);
+        tottask.setText("Total Task: " + tottaskvar);
         txtname.setText(t.getName());
         txtdesc.setText(t.getDesc());
 
@@ -54,22 +53,22 @@ public class TaskMaster extends javax.swing.JFrame {
         curtask = new javax.swing.JLabel();
         tottask = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        verlast = new javax.swing.JButton();
+        last = new javax.swing.JButton();
+        up = new javax.swing.JButton();
+        verup = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        showall = new javax.swing.JMenuItem();
+        exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        replace = new javax.swing.JMenuItem();
+        remove = new javax.swing.JMenuItem();
+        restore = new javax.swing.JMenuItem();
+        next = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        before = new javax.swing.JMenuItem();
+        after = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,18 +109,33 @@ public class TaskMaster extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton1.setText("|<");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        verlast.setText("|<");
+        verlast.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                verlastActionPerformed(evt);
             }
         });
 
-        jButton2.setText("<");
+        last.setText("<");
+        last.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText(">");
+        up.setText(">");
+        up.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                upActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText(">|");
+        verup.setText(">|");
+        verup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -129,69 +143,74 @@ public class TaskMaster extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(verlast)
                 .addGap(29, 29, 29)
-                .addComponent(jButton2)
+                .addComponent(last)
                 .addGap(79, 79, 79)
-                .addComponent(jButton3)
+                .addComponent(up)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(verup)
                 .addGap(14, 14, 14))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(verlast)
+                    .addComponent(last)
+                    .addComponent(up)
+                    .addComponent(verup))
                 .addGap(0, 6, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
 
-        jMenuItem7.setText("Show All");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        showall.setText("Show All");
+        showall.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                showallActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem7);
+        jMenu1.add(showall);
 
-        jMenuItem8.setText("Exit");
-        jMenu1.add(jMenuItem8);
+        exit.setText("Exit");
+        jMenu1.add(exit);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
 
-        jMenuItem3.setText("Replace This As Current Task");
-        jMenu2.add(jMenuItem3);
+        replace.setText("Replace This As Current Task");
+        jMenu2.add(replace);
 
-        jMenuItem4.setText("Remove Current Task");
-        jMenu2.add(jMenuItem4);
+        remove.setText("Remove Current Task");
+        jMenu2.add(remove);
 
-        jMenuItem5.setText("Restore Current Task");
-        jMenu2.add(jMenuItem5);
+        restore.setText("Restore Current Task");
+        restore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restoreActionPerformed(evt);
+            }
+        });
+        jMenu2.add(restore);
 
-        jMenuItem6.setText("Clear Screen");
-        jMenu2.add(jMenuItem6);
+        next.setText("Clear Screen");
+        jMenu2.add(next);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Insert");
 
-        jMenuItem1.setText("Before Current Task");
-        jMenu3.add(jMenuItem1);
+        before.setText("Before Current Task");
+        jMenu3.add(before);
 
-        jMenuItem2.setText("After Current Task");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        after.setText("After Current Task");
+        after.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                afterActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        jMenu3.add(after);
 
         jMenuBar1.add(jMenu3);
 
@@ -245,7 +264,7 @@ public class TaskMaster extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void afterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afterActionPerformed
         String nm = txtname.getText();
         String d = txtdesc.getText();
         Task t = new Task(nm, d);
@@ -261,14 +280,55 @@ public class TaskMaster extends javax.swing.JFrame {
         li.previous();
         curtaskvar++;
         tottaskvar++;
-        curtask.setText("" + curtaskvar);
-        tottask.setText("" + tottaskvar);
+        curtask.setText("Current Task: " + curtaskvar);
+        tottask.setText("Total Task: " + tottaskvar);
         JOptionPane.showMessageDialog(this, "Task Added");
 
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_afterActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void verlastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verlastActionPerformed
+       
+    }//GEN-LAST:event_verlastActionPerformed
+
+    private void showallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showallActionPerformed
+        String result = "";
+        for (int i = 0; i < list.size(); i++) {
+            t = (Task) list.get(i);
+            result += "TASK " + (i + 1) + ":\n" + t.toString() + "\n";
+        }
+        JOptionPane.showMessageDialog(this, result);
+    }//GEN-LAST:event_showallActionPerformed
+
+    private void restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreActionPerformed
+
+    }//GEN-LAST:event_restoreActionPerformed
+
+    private void upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upActionPerformed
         if (curtaskvar == tottaskvar) {
+            return;
+        }
+        li.next();
+        li.next();
+        t = (Task) li.previous();
+        curtaskvar += 1;
+        curtask.setText("Current Task: " + curtaskvar);
+        txtname.setText("" + t.getName());
+        txtdesc.setText("" + t.getDesc());
+    }//GEN-LAST:event_upActionPerformed
+
+    private void lastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastActionPerformed
+          if (curtaskvar == 1) {
+            return;
+        }
+        t = (Task) li.previous();
+        curtaskvar -= 1;
+        curtask.setText("Current Task: " + curtaskvar);
+        txtname.setText("" + t.getName());
+        txtdesc.setText("" + t.getDesc());
+    }//GEN-LAST:event_lastActionPerformed
+
+    private void verupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verupActionPerformed
+          if (curtaskvar == tottaskvar) {
             return;
         }
         while (li.hasNext()) {
@@ -276,19 +336,10 @@ public class TaskMaster extends javax.swing.JFrame {
         }
         t = (Task) li.previous();
         curtaskvar = tottaskvar;
-        curtask.setText(""+curtask);
-        txtname.setText(""+t.getName());
-        txtdesc.setText(""+t.getDesc());
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        String result ="";
-        for (int i = 0; i < list.size(); i++) {
-            t=(Task)list.get(i);
-            result += "TASK " + (i+1) + ":\n" + t.toString()+"\n";
-        }
-        JOptionPane.showMessageDialog(this, result);
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+        curtask.setText("Current Task: " + curtaskvar);
+        txtname.setText("" + t.getName());
+        txtdesc.setText("" + t.getDesc());
+    }//GEN-LAST:event_verupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -326,30 +377,30 @@ public class TaskMaster extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem after;
+    private javax.swing.JMenuItem before;
     private javax.swing.JLabel curtask;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JMenuItem exit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton last;
+    private javax.swing.JMenuItem next;
+    private javax.swing.JMenuItem remove;
+    private javax.swing.JMenuItem replace;
+    private javax.swing.JMenuItem restore;
+    private javax.swing.JMenuItem showall;
     private javax.swing.JLabel tottask;
     private javax.swing.JTextArea txtdesc;
     private javax.swing.JTextField txtname;
+    private javax.swing.JButton up;
+    private javax.swing.JButton verlast;
+    private javax.swing.JButton verup;
     // End of variables declaration//GEN-END:variables
 }
