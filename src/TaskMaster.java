@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
-
 public class TaskMaster extends javax.swing.JFrame {
 
     ArrayList<Task> list;
@@ -166,6 +165,11 @@ public class TaskMaster extends javax.swing.JFrame {
         jMenu1.add(showall);
 
         exit.setText("Exit");
+        exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitActionPerformed(evt);
+            }
+        });
         jMenu1.add(exit);
 
         jMenuBar1.add(jMenu1);
@@ -197,6 +201,11 @@ public class TaskMaster extends javax.swing.JFrame {
         jMenu2.add(restore);
 
         next.setText("Clear Screen");
+        next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextActionPerformed(evt);
+            }
+        });
         jMenu2.add(next);
 
         jMenuBar1.add(jMenu2);
@@ -294,7 +303,7 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_afterActionPerformed
 
     private void verlastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verlastActionPerformed
-       if (curtaskvar == 1) {
+        if (curtaskvar == 1) {
             return;
         }
         while (li.hasPrevious()) {
@@ -306,7 +315,7 @@ public class TaskMaster extends javax.swing.JFrame {
         curtask.setText("Current Task: " + curtaskvar);
         txtname.setText("" + t.getName());
         txtdesc.setText("" + t.getDesc());
-                                    
+
     }//GEN-LAST:event_verlastActionPerformed
 
     private void showallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showallActionPerformed
@@ -321,8 +330,8 @@ public class TaskMaster extends javax.swing.JFrame {
     private void restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreActionPerformed
         li.next();
         t = (Task) li.previous();
-        txtname.setText(""+t.getName());
-        txtdesc.setText(""+t.getDesc());
+        txtname.setText("" + t.getName());
+        txtdesc.setText("" + t.getDesc());
     }//GEN-LAST:event_restoreActionPerformed
 
     private void upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upActionPerformed
@@ -339,7 +348,7 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_upActionPerformed
 
     private void lastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastActionPerformed
-          if (curtaskvar == 1) {
+        if (curtaskvar == 1) {
             return;
         }
         t = (Task) li.previous();
@@ -350,7 +359,7 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_lastActionPerformed
 
     private void verupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verupActionPerformed
-          if (curtaskvar == tottaskvar) {
+        if (curtaskvar == tottaskvar) {
             return;
         }
         while (li.hasNext()) {
@@ -364,7 +373,42 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_verupActionPerformed
 
     private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
-        
+        if (tottaskvar == 0) {
+            return;
+        }
+        li.next();
+        li.remove();
+        tottaskvar -= 1;
+        if (tottaskvar == 0) {
+            txtname.setText("");
+            txtdesc.setText("");
+            curtaskvar = 0;
+        }
+        if (tottaskvar == 1) {
+            if (li.hasNext()) {
+                li.next();
+                t = (Task) li.previous();
+                txtname.setText("" + t.getName());
+                txtdesc.setText("" + t.getDesc());
+            } else if (li.hasPrevious()) {
+                t = (Task) li.previous();
+                txtname.setText("" + t.getName());
+                txtdesc.setText("" + t.getDesc());
+            }
+        }
+        if (tottaskvar > 1) {
+            if (curtaskvar == 0) {
+                li.next();
+                t = (Task) li.previous();
+                txtname.setText("" + t.getName());
+                txtdesc.setText("" + t.getDesc());
+            }
+            else {
+                t = (Task) li.previous();
+                txtname.setText("" + t.getName());
+                txtdesc.setText("" + t.getDesc());
+            }
+        }
     }//GEN-LAST:event_removeActionPerformed
 
     private void replaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceActionPerformed
@@ -372,13 +416,13 @@ public class TaskMaster extends javax.swing.JFrame {
         String tempdesc = txtdesc.getText();
         li.next();
         li.previous();
-        t = new Task(tempname,tempdesc);
+        t = new Task(tempname, tempdesc);
         li.set(t);
-        
+
     }//GEN-LAST:event_replaceActionPerformed
 
     private void beforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beforeActionPerformed
-         String nm = txtname.getText();
+        String nm = txtname.getText();
         String d = txtdesc.getText();
         Task t = new Task(nm, d);
         if (t.validate() == false) {
@@ -386,16 +430,25 @@ public class TaskMaster extends javax.swing.JFrame {
             return;
         }
         if (tottaskvar > 0) {
-            li.previous();
+            li.add(t);
+            curtaskvar--;
+            tottaskvar++;
+            curtask.setText("Current Task: " + curtaskvar);
+            tottask.setText("Total Task: " + tottaskvar);
+            JOptionPane.showMessageDialog(this, "Task Added");
         }
 
-        li.add(t);
-        curtaskvar--;
-        tottaskvar++;
-        curtask.setText("Current Task: " + curtaskvar);
-        tottask.setText("Total Task: " + tottaskvar);
-        JOptionPane.showMessageDialog(this, "Task Added");
+
     }//GEN-LAST:event_beforeActionPerformed
+
+    private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
+        txtname.setText("");
+        txtdesc.setText("");
+    }//GEN-LAST:event_nextActionPerformed
+
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitActionPerformed
 
     /**
      * @param args the command line arguments
