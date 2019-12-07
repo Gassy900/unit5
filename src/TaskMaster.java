@@ -378,37 +378,31 @@ public class TaskMaster extends javax.swing.JFrame {
         }
         li.next();
         li.remove();
-        tottaskvar -= 1;
+        tottaskvar --;
         if (tottaskvar == 0) {
-            txtname.setText("");
-            txtdesc.setText("");
+            t = new Task("", "");
             curtaskvar = 0;
         }
-        if (tottaskvar == 1) {
-            if (li.hasNext()) {
-                li.next();
+        else if (tottaskvar == 1) {
+            if (li.hasNext()) li.next();
                 t = (Task) li.previous();
-                txtname.setText("" + t.getName());
-                txtdesc.setText("" + t.getDesc());
-            } else if (li.hasPrevious()) {
-                t = (Task) li.previous();
-                txtname.setText("" + t.getName());
-                txtdesc.setText("" + t.getDesc());
-            }
+                curtaskvar = 1;
+            
         }
-        if (tottaskvar > 1) {
-            if (curtaskvar == 0) {
+        else if (tottaskvar > 1) {
+            if (curtaskvar == 1) {
                 li.next();
                 t = (Task) li.previous();
-                txtname.setText("" + t.getName());
-                txtdesc.setText("" + t.getDesc());
             }
             else {
                 t = (Task) li.previous();
-                txtname.setText("" + t.getName());
-                txtdesc.setText("" + t.getDesc());
+                curtaskvar -= 1;
             }
         }
+        txtname.setText("" + t.getName());
+        txtdesc.setText("" + t.getDesc());
+        curtask.setText("Current Task: " + curtaskvar);
+        tottask.setText("Total Tasks: " + tottaskvar);
     }//GEN-LAST:event_removeActionPerformed
 
     private void replaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceActionPerformed
@@ -429,14 +423,12 @@ public class TaskMaster extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error - Must enter all information");
             return;
         }
-        if (tottaskvar > 0) {
             li.add(t);
-            curtaskvar--;
+            li.previous();
             tottaskvar++;
-            curtask.setText("Current Task: " + curtaskvar);
             tottask.setText("Total Task: " + tottaskvar);
             JOptionPane.showMessageDialog(this, "Task Added");
-        }
+        
 
 
     }//GEN-LAST:event_beforeActionPerformed
